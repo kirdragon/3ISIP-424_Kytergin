@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{44D603F3-B578-46F8-880F-5D2778E486D6}</ProjectGuid>
+    <ProjectGuid>{E9AA1B63-F8B4-B19E-0B27-DFC4AC24A1DF}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>_3ISIP_424_Kytergin</RootNamespace>
     <AssemblyName>3ISIP-424_Kytergin</AssemblyName>
