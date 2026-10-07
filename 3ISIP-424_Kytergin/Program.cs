@@ -33,6 +33,8 @@ namespace _3ISIP_424_Kytergin
             Console.WriteLine($"Самое длинное слово содержит {LongestWord} символ(ов)");
             int ShortestWord = wordwork.ShortestWord(text);
             Console.WriteLine($"Самое короткое слово содержит {ShortestWord} символ(ов)");
+            int sentencescount = wordwork.SentencesCount(text);
+            Console.WriteLine($"Количество предложений: {sentencescount}");
         }
         class WordWork
         {
@@ -59,6 +61,15 @@ namespace _3ISIP_424_Kytergin
                     }
                 }
                 return longest;
+            }
+            public int SentencesCount(string text)
+            {
+                string[] sentences = text.Split(
+                    new char[] { '.', '!', '?' },
+                    StringSplitOptions.RemoveEmptyEntries
+                );
+
+                return sentences.Length;
             }
             public int ShortestWord(string text)
             {
