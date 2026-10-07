@@ -29,13 +29,51 @@ namespace _3ISIP_424_Kytergin
             WordWork wordwork = new WordWork();
             int WordCount = wordwork.CountWords(text);
             Console.WriteLine($"Количество слов: {WordCount}");
+            int LongestWord = wordwork.LongestWord(text);
+            Console.WriteLine($"Самое длинное слово содержит {LongestWord} символ(ов)");
+            int ShortestWord = wordwork.ShortestWord(text);
+            Console.WriteLine($"Самое короткое слово содержит {ShortestWord} символ(ов)");
         }
         class WordWork
         {
+            public string[] Getwords(string text)
+            {
+                return text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            }
             public int CountWords(string text)
             {
-            string[] words = text.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-            return words.Length;
+                string[] words = Getwords(text);
+                return words.Length;
+            }
+            public int LongestWord(string text)
+            {
+                string[] words = Getwords(text);
+                int longest = words[0].Length;
+                int WordLenght;
+                foreach(string word in words)
+                {
+                    WordLenght = word.Length;
+                    if (WordLenght > longest)
+                    {
+                        longest = WordLenght;
+                    }
+                }
+                return longest;
+            }
+            public int ShortestWord(string text)
+            {
+                string[] words = Getwords(text);
+                int shortest = words[0].Length;
+                int WordLenght;
+                foreach (string word in words)
+                {
+                    WordLenght = word.Length;
+                    if (WordLenght < shortest)
+                    {
+                        shortest = WordLenght;
+                    }
+                }
+                return shortest;
             }
         }
     }
