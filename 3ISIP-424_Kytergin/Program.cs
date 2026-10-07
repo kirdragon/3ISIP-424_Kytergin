@@ -11,6 +11,8 @@ namespace _3ISIP_424_Kytergin
     {
         static void Main(string[] args)
         {
+            string glas = "аеёиоуыэюяeyuioa";
+            string soglas = "бвгджзйклмнпрстфхцчшщqwrtpsdfghjklzxcvbnm";
             string text;
             while (true)
             {
@@ -35,6 +37,18 @@ namespace _3ISIP_424_Kytergin
             Console.WriteLine($"Самое короткое слово содержит {ShortestWord} символ(ов)");
             int sentencescount = wordwork.SentencesCount(text);
             Console.WriteLine($"Количество предложений: {sentencescount}");
+            Console.WriteLine("Частота букв: ");
+            foreach (var letter in wordwork.LetterFrequency(text))
+            {
+                if (glas.Contains(letter.Key))
+                {
+                    Console.WriteLine($"Гласная буква '{letter.Key}' встречается {letter.Value} раз(а)");
+                }
+                else if (soglas.Contains(letter.Key))
+                {
+                    Console.WriteLine($"Согласная буква '{letter.Key}' встречается {letter.Value} раз(а)");
+                }
+            }
         }
         class WordWork
         {
@@ -85,6 +99,25 @@ namespace _3ISIP_424_Kytergin
                     }
                 }
                 return shortest;
+            }
+            public Dictionary<char, int> LetterFrequency(string text)
+            {
+                text = text.ToLower();
+
+                Dictionary<char, int> frequency = new Dictionary<char, int>();
+                foreach(char letter in text)
+                {
+                    if (char.IsLetter(letter))
+                        if (frequency.ContainsKey(letter))
+                        {
+                            frequency[letter]++;
+                        }
+                        else
+                        {
+                            frequency.Add(letter, 1);
+                        }
+                }
+                return frequency;
             }
         }
     }
