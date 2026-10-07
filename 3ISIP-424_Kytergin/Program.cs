@@ -13,6 +13,8 @@ namespace _3ISIP_424_Kytergin
         {
             string glas = "аеёиоуыэюяeyuioa";
             string soglas = "бвгджзйклмнпрстфхцчшщqwrtpsdfghjklzxcvbnm";
+            int glascount = 0;
+            int sogcount = 0;
             string text;
             while (true)
             {
@@ -49,6 +51,19 @@ namespace _3ISIP_424_Kytergin
                     Console.WriteLine($"Согласная буква '{letter.Key}' встречается {letter.Value} раз(а)");
                 }
             }
+            foreach(char letter in text.ToLower())
+            {
+                if (glas.Contains(letter))
+                {
+                    glascount++;
+                }
+                else if (soglas.Contains(letter))
+                {
+                    sogcount++;
+                }
+            }
+            Console.WriteLine($"Количество гласных букв: {glascount}");
+            Console.WriteLine($"Количество согласных букв: {sogcount}");
         }
         class WordWork
         {
