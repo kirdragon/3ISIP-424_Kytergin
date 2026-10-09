@@ -11,6 +11,29 @@ namespace _3ISIP_424_Kytergin
     {
         static void Main(string[] args)
         {
+            while (true)
+            {
+                Console.WriteLine("1. Добавить книгу");
+                Console.WriteLine("2. Удалить книгу");
+                Console.WriteLine("3. Найти книгу");
+                Console.WriteLine("4. Отсортировать книги");
+                Console.WriteLine("5. Вывести самую дешевую и дорогую книгу");
+                Console.WriteLine("6. Сгруппировать книги по авторам и вывести количество книг каждого автора.");
+                Console.WriteLine("7. Выйти");
+                int choice = ReadInt("Выберите пункт: ", 1, 7);
+            }
+        }
+        static int ReadInt(string message, int min, int max)
+        {
+            while(true)
+            {
+                Console.WriteLine(message);
+                if (int.TryParse(Console.ReadLine(), out int result) && result >= min && result <=max)
+                {
+                    return result;
+                }
+                Console.WriteLine($"Ошибка! Введите число от {min} до {max}");
+            }
         }
         class Book
         {
