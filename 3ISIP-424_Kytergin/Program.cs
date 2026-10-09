@@ -32,7 +32,18 @@ namespace _3ISIP_424_Kytergin
                 {
                     return result;
                 }
-                Console.WriteLine($"Ошибка! Введите число от {min} до {max}");
+                Console.WriteLine($"Ошибка! Введите число от {min} до {max}.");
+            }
+        }
+        static decimal ReadDecimal(string message)
+        {
+            while (true)
+            {
+                if (decimal.TryParse(Console.ReadLine(), out decimal result) && result>=0)
+                {
+                    return result;
+                }
+                Console.WriteLine("Ошибка! Введите корректную цену.");
             }
         }
         class Book
