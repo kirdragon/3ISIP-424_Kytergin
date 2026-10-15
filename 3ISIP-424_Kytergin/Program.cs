@@ -96,24 +96,30 @@
                              break;
                             }
                         case 4:
-                        {
-                            var sortedbooks = new List<Book>();
-                            int num = GetInt("1. Отсортировать книги по названию\n2. По году выпуска\nВыбор: ",1,2);
-                            if (num ==1)
                             {
-                                sortedbooks = books.OrderBy(b => b.book_name).ToList();
+                                var sortedbooks = new List<Book>();
+                                int num = GetInt("1. Отсортировать книги по названию\n2. По году выпуска\nВыбор: ", 1, 2);
+                                if (num == 1)
+                                {
+                                    sortedbooks = books.OrderBy(b => b.book_name).ToList();
+                                }
+                                else
+                                {
+                                    sortedbooks = books.OrderBy(b => b.book_year).ToList();
+                                }
+                                foreach (var book in sortedbooks)
+                                {
+                                    Console.WriteLine($"ID: {book.book_id}, Название: {book.book_name}, Автор: {book.book_author}, Жанр: {book.book_genre}, Год издания: {book.book_year}, Цена: {book.book_price}");
+                                }
+                                break;
                             }
-                            else
+                        case 5:
                             {
-                            sortedbooks = books.OrderBy(b=>b.book_year).ToList();
+                                var max_value = books.Max(b => b.book_price);
+                                decimal min_value = books.Min(b => b.book_price);
+                                Console.WriteLine($"Самая дорогая книга стоит {max_value}, а самая дешевая - {min_value}");
+                                break;
                             }
-                            foreach (var book in sortedbooks)
-                            {
-                                Console.WriteLine($"ID: {book.book_id}, Название: {book.book_name}, Автор: {book.book_author}, Жанр: {book.book_genre}, Год издания: {book.book_year}, Цена: {book.book_price}");
-                            }
-                            break;
-
-                        }
                     }
                 }
             }
