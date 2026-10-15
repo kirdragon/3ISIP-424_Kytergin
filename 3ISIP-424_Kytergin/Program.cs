@@ -10,6 +10,30 @@ namespace _3ISIP_424_Kytergin
     {
         static void Main(string[] args)
         {
+            int next_id = 1;
+            List<Book> books = new List<Book>();
+            int choice;
+            while (true)
+            {
+                Console.WriteLine("1. Добавить книгу");
+                Console.WriteLine("2. Удалить книгу");
+                Console.WriteLine("3. Найти книгу и вывести информацию");
+                Console.WriteLine("4. Отсортировать книги");
+                Console.WriteLine("5. Вывести самую дорогую и самую дешевую книги");
+                Console.WriteLine("6. Сгруппировать книги по авторам и вывести количество книг каждого автора");
+                Console.WriteLine("7. Выход");
+                choice = GetInt("Выберите действие: ", 1, 7);
+            }
+        }
+        static int GetInt(string message, int min, int max)
+        {
+            int value;
+            Console.WriteLine(message);
+            while (!int.TryParse(Console.ReadLine(), out value) || value < min || value > max)
+            {
+                Console.WriteLine($"Некорректный ввод. Введите целое число в диапазоне {min} - {max}.");
+            }
+            return value;
         }
         class Book
         {
@@ -29,5 +53,6 @@ namespace _3ISIP_424_Kytergin
                 this.book_price = book_price;
             }
         }
+
     }
 }
