@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace _3ISIP_424_Kytergin
 {
     internal class Program
@@ -27,28 +26,46 @@ namespace _3ISIP_424_Kytergin
                 switch (choice)
                 {
                     case 1:
-                        Console.Write("Введите название книги: ");
-                        string bookName = Console.ReadLine();
-                        Console.Write("Введите автора: ");
-                        string bookAuthor = Console.ReadLine();
-                        Console.Write("Введите жанр: ");
-                        string bookGenre = Console.ReadLine();
-                        int bookYear = GetInt("Введите год издания: ", 0, 2026);
-                        Console.Write("Введите цену: ");
-                        decimal bookPrice;
-                        while (!decimal.TryParse(Console.ReadLine(), out bookPrice) || bookPrice <= 0)
                         {
-                            Console.WriteLine("Некорректный ввод. Введите цену в формате decimal.");
+                            Console.Write("Введите название книги: ");
+                            string bookName = Console.ReadLine();
+                            Console.Write("Введите автора: ");
+                            string bookAuthor = Console.ReadLine();
+                            Console.Write("Введите жанр: ");
+                            string bookGenre = Console.ReadLine();
+                            int bookYear = GetInt("Введите год издания: ", 0, 2026);
+                            Console.Write("Введите цену: ");
+                            decimal bookPrice;
+                            while (!decimal.TryParse(Console.ReadLine(), out bookPrice) || bookPrice <= 0)
+                            {
+                                Console.WriteLine("Некорректный ввод. Введите цену в формате decimal.");
+                            }
+                            books.Add(new Book(bookName, bookAuthor, bookGenre, bookYear, bookPrice));
+                            break;
                         }
-                        books.Add(new Book(bookName, bookAuthor, bookGenre, bookYear, bookPrice));
-                        break;
+
+                    case 2:
+                        {
+                            int input_id = GetInt("Введите ID книги: ", 1, int.MaxValue);
+                            Book book = books.FirstOrDefault(b => b.book_id == input_id);
+                            if (book != null)
+                            {
+                                books.Remove(book);
+                                Console.WriteLine("Книга удалена.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Книга с таким ID не найдена.");
+                            }
+                            break;
+                        }
                 }
             }
         }
         static int GetInt(string message, int min, int max)
         {
             int value;
-            Console.WriteLine(message);
+            Console.Write(message);
             while (!int.TryParse(Console.ReadLine(), out value) || value < min || value > max)
             {
                 Console.WriteLine($"Некорректный ввод. Введите целое число в диапазоне {min} - {max}.");
