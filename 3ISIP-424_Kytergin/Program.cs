@@ -63,7 +63,12 @@ namespace _3ISIP_424_Kytergin
                         Console.WriteLine($"Преподаватель {teacher.name} добавлен.");
                         break;
                     case "4":
-                        // Вывод преподавателей
+                        int ii = 1;
+                        foreach (Teacher t in teachers)
+                        {
+                            Console.WriteLine($"Преподаватель №{ii}. {t.name}, {t.age} лет");
+                            ii++;
+                        }
                         break;
                     case "5":
                         // Создание курса
