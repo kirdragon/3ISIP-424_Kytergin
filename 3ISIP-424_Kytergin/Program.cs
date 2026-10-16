@@ -18,7 +18,7 @@ namespace _3ISIP_424_Kytergin
             List<Course> courses = new List<Course>();
             while (true)
             {
-                Console.WriteLine("\n   СИСТЕМА УПРАВЛЕНИЯ УНИВЕРСИТЕТОМ   ");
+                Console.WriteLine("\nСИСТЕМА УПРАВЛЕНИЯ УНИВЕРСИТЕТОМ");
                 Console.WriteLine("1. Добавить студента");
                 Console.WriteLine("2. Показать всех студентов");
                 Console.WriteLine("3. Добавить преподавателя");
@@ -46,8 +46,12 @@ namespace _3ISIP_424_Kytergin
                         Console.WriteLine($"Студент {student.name} добавлен.");
                         break;
                     case "2":
-                    
-                        // Вывод студентов
+                    int i = 1;
+                    foreach(Student st in students)
+                    {
+                        Console.WriteLine($"Студент №{i}. {st.name}, {st.age} лет, группа: {st.group}");
+                        i++;
+                    }
                         break;
                     case "3":
                         // Добавление преподавателя
