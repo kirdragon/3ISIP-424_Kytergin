@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using static _3ISIP_424_Kytergin.Program;
 
 namespace _3ISIP_424_Kytergin
 {
@@ -10,9 +12,6 @@ namespace _3ISIP_424_Kytergin
     {
         static void Main(string[] args)
         {
-            string name;
-            int age;
-            string group;
             List<Student> students = new List<Student>();
             List<Teacher> teachers = new List<Teacher>();
             List<Course> courses = new List<Course>();
@@ -35,43 +34,20 @@ namespace _3ISIP_424_Kytergin
                 switch (choice)
                 {
                     case "1":
-                        Console.Write("Введите имя студента: ");
-                        name = Console.ReadLine();
-                        Console.Write("Введите возраст студента: ");
-                        age = int.Parse(Console.ReadLine());
-                        Console.Write("Введите группу студента: ");
-                        group = Console.ReadLine();
-                        Student student = new Student(name, age, group);
-                        students.Add(student);
-                        Console.WriteLine($"Студент {student.name} добавлен.");
+                        AddStudent(students);
                         break;
                     case "2":
-                    int i = 1;
-                        foreach (Student st in students)
-                        {
-                            Console.WriteLine($"Студент №{i}. {st.name}, {st.age} лет, группа: {st.group}");
-                            i++;
-                        }
-                            break;
+                        ShowStudents(students);
+                        break;
                     case "3":
-                        Console.Write("Введите имя преподавателя: ");
-                        name = Console.ReadLine();
-                        Console.Write("Введите возраст преподавателя: ");
-                        age = int.Parse(Console.ReadLine());
-                        Teacher teacher = new Teacher(name, age);
-                        teachers.Add(teacher);
-                        Console.WriteLine($"Преподаватель {teacher.name} добавлен.");
+                        AddTeachers(teachers);
                         break;
                     case "4":
-                        int ii = 1;
-                        foreach (Teacher t in teachers)
-                        {
-                            Console.WriteLine($"Преподаватель №{ii}. {t.name}, {t.age} лет");
-                            ii++;
-                        }
+                        ShowTeachers(teachers);
                         break;
                     case "5":
-                        // Создание курса
+                        Console.Write("Введите название курса: ");
+
                         break;
                     case "6":
                         // Вывод курсов
@@ -92,6 +68,46 @@ namespace _3ISIP_424_Kytergin
                         break;
                 }
             }
+        }
+        static void AddTeachers(List<Teacher> teachers)
+        {
+            Console.Write("Введите имя преподавателя: ");
+            string name = Console.ReadLine();
+            Console.Write("Введите возраст преподавателя: ");
+            int age = int.Parse(Console.ReadLine());
+            Teacher teacher = new Teacher(name, age);
+            teachers.Add(teacher);
+            Console.WriteLine($"Преподаватель {teacher.name} добавлен.");
+        }
+        static void ShowStudents(List<Student> students)
+        {
+            int i = 1;
+            foreach (Student st in students)
+            {
+                Console.WriteLine($"Студент №{i}. {st.name}, {st.age} лет, группа: {st.group}");
+                i++;
+            }
+        }
+        static void ShowTeachers(List<Teacher> teachers)
+        {
+            int i = 1;
+            foreach (Teacher t in teachers)
+            {
+                Console.WriteLine($"Преподаватель №{i}. {t.name}, {t.age} лет");
+                i++;
+            }
+        }
+        static void AddStudent(List<Student> students)
+        {
+            Console.Write("Введите имя студента: ");
+            string name = Console.ReadLine();
+            Console.Write("Введите возраст студента: ");
+            int age = int.Parse(Console.ReadLine());
+            Console.Write("Введите группу студента: ");
+            string group = Console.ReadLine();
+            Student student = new Student(name, age, group);
+            students.Add(student);
+            Console.WriteLine($"Студент {student.name} добавлен.");
         }
         public class Person
         {
