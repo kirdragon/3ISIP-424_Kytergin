@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -66,6 +67,31 @@ namespace _3ISIP_424_Kytergin
                         Console.WriteLine("Неверный пункт меню!");
                         break;
                 }
+            }
+        }
+        public static string GetString(string message)
+        {
+            string input;
+            Console.Write(message);
+            input = Console.ReadLine();
+            while (string.IsNullOrWhiteSpace(input))
+            {
+            Console.WriteLine("Ошибка! Значение не должно быть пустым!\n Напиши еще раз: ");
+            input = Console.ReadLine();
+            }
+            return input.Trim();
+        }
+        public static int GetInt(string message, int min, int max)
+        {
+            Console.Write(message);
+            while (true)
+            {
+                int nubmer;
+                if (int.TryParse(Console.ReadLine(), out nubmer) && nubmer >= min && nubmer <= max)
+                {
+                    return nubmer;
+                }
+                Console.Write($"Ошибка! Напишите целое число от {min} до {max}");
             }
         }
         static void CoursesStudents(List<Course> courses)
@@ -162,7 +188,7 @@ namespace _3ISIP_424_Kytergin
             Console.Write("Введите имя студента: ");
             string name = Console.ReadLine();
             Console.Write("Введите возраст студента: ");
-            int age = int.Parse(Console.ReadLine());
+            int age = GetInt("Введите возраст студента: ", 15, 100);
             Console.Write("Введите группу студента: ");
             string group = Console.ReadLine();
             Student student = new Student(name, age, group);
