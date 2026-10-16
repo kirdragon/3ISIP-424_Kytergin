@@ -21,19 +21,33 @@ namespace _3ISIP_424_Kytergin
                 this.age = age;
             }
         }
-        public class Student: Person
+        public class Student : Person
         {
             public string group;
             public Student(string name, int age, string group) : base(name, age)
             {
                 this.group = group;
             }
+            public List<Course> courses = new List<Course>();
+
+        }
+        public class Teacher : Person
+        {
+        public List<Course> courses = new List<Course>();
+        public Teacher(string name, int age) : base(name, age)
+            {
+            }
         }
         public class Course
         {
             string name;
-            string teacher;
+            Teacher teacher;
             List<Student> students = new List<Student>();
+            public Course(string name, Teacher teacher)
+            {
+                this.name = name;
+                this.teacher = teacher;
+            }
         }
     }
 }
