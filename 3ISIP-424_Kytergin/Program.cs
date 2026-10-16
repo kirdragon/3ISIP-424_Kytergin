@@ -55,7 +55,7 @@ namespace _3ISIP_424_Kytergin
                         StudenToCourse(students, courses);
                         break;
                     case "8":
-                        // Курсы конкретного студента
+                        ShowStudentsCourses(students);
                         break;
                     case "9":
                         // Студенты конкретного курса
@@ -66,6 +66,19 @@ namespace _3ISIP_424_Kytergin
                         Console.WriteLine("Неверный пункт меню!");
                         break;
                 }
+            }
+        }
+        static void ShowStudentsCourses(List<Student> students)
+        {
+            ShowStudents(students);
+            Console.Write("Введите номер студента, курсы которого хотите узнать: ");
+            int num = int.Parse(Console.ReadLine());
+            Student student = students[num - 1];
+            int i = 1;
+            foreach (Course course in student.courses)
+            {
+                Console.WriteLine($"№{i}. Название - {course.name}");
+                i++;
             }
         }
         static void StudenToCourse(List <Student> students, List <Course> courses)
@@ -128,6 +141,7 @@ namespace _3ISIP_424_Kytergin
             foreach (Course course in courses)
             {
                 Console.WriteLine($"№{i}. имя - {course.name}, учитель - {course.teacher.name}");
+                i++;
             }
         }
         static void AddStudent(List<Student> students)
