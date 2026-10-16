@@ -27,7 +27,7 @@ namespace _3ISIP_424_Kytergin
                 Console.WriteLine("6. Показать все курсы");
                 Console.WriteLine("7. Записать студента на курс");
                 Console.WriteLine("8. Показать курсы студента");
-                Console.WriteLine("9. Показать студентов курса");
+                Console.WriteLine("9. Показать студентов курсов");
                 Console.WriteLine("0. Выход");
                 Console.Write("Выберите действие: ");
                 string choice = Console.ReadLine();
@@ -64,20 +64,46 @@ namespace _3ISIP_424_Kytergin
                     case "0":
                         return;
                     default:
-                        Console.WriteLine("Неверный пункт меню!");
+                        Console.WriteLine("Ошибка ввода! Вводите только целые числа от 0 до 9!");
                         break;
                 }
             }
         }
+        public static bool CheckExistTeachers(List<Teacher> teachers)
+        {
+            if (teachers.Count == 0)
+            {
+                Console.WriteLine("Пока нет ни одного преподавателя!");
+                return false;
+            }
+            return true;
+        }
+        public static bool CheckExistStudents(List<Student> students)
+        {
+            if (students.Count == 0)
+            {
+                Console.WriteLine("Пока нет ни 1 студента!");
+                return false;
+            }
+            return true;
+        }
+        public static bool CheckExistCourses(List<Course> courses)
+        {
+            if (courses.Count == 0)
+            {
+                Console.WriteLine("Пока нет ни 1 курса!");
+                return false;
+            }
+            return true;
+        }
         public static string GetString(string message)
         {
-            string input;
             Console.Write(message);
-            input = Console.ReadLine();
+            string input = Console.ReadLine();
             while (string.IsNullOrWhiteSpace(input))
             {
-            Console.WriteLine("Ошибка! Значение не должно быть пустым!\n Напиши еще раз: ");
-            input = Console.ReadLine();
+                Console.Write("Ошибка! Значение не должно быть пустым!\nНапиши еще раз: ");
+                input = Console.ReadLine();
             }
             return input.Trim();
         }
@@ -91,15 +117,23 @@ namespace _3ISIP_424_Kytergin
                 {
                     return nubmer;
                 }
-                Console.Write($"Ошибка! Напишите целое число от {min} до {max}");
+                Console.Write($"Ошибка! Напишите целое число от {min} до {max}: ");
             }
         }
         static void CoursesStudents(List<Course> courses)
         {
+            if (!CheckExistCourses(courses))
+            {
+                return;
+            }
             ShowCourses(courses);
-            Console.Write("Введите номер курса, студентов которого хотите узнать: ");
-            int num = int.Parse(Console.ReadLine());
+            int num = GetInt("Введите номер курса, студентов которого хотите узнать: ", 1, courses.Count);
             Course course = courses[num - 1];
+            if (course.students.Count == 0)
+            {
+                Console.WriteLine("На этом курсе пока нет студентов!");
+                return;
+            }
             int i = 1;
             foreach (Student student in course.students)
             {
@@ -109,10 +143,18 @@ namespace _3ISIP_424_Kytergin
         }
         static void ShowStudentsCourses(List<Student> students)
         {
+            if (!CheckExistStudents(students))
+            {
+                return;
+            }
             ShowStudents(students);
-            Console.Write("Введите номер студента, курсы которого хотите узнать: ");
-            int num = int.Parse(Console.ReadLine());
+            int num = GetInt("Введите номер студента, курсы которого хотите узнать: ", 1, students.Count);
             Student student = students[num - 1];
+            if (student.courses.Count == 0)
+            {
+                Console.WriteLine("Студент пока не записан ни на один курс!");
+                return;
+            }
             int i = 1;
             foreach (Course course in student.courses)
             {
@@ -120,36 +162,47 @@ namespace _3ISIP_424_Kytergin
                 i++;
             }
         }
-        static void StudenToCourse(List <Student> students, List <Course> courses)
+        static void StudenToCourse(List<Student> students, List<Course> courses)
         {
+            if (!CheckExistStudents(students) || !CheckExistCourses(courses))
+            {
+                return;
+            }
             ShowStudents(students);
-            Console.Write("Впишите номер студента, которого хотите записать: ");
-            int st_num = int.Parse(Console.ReadLine());
+            int st_num = GetInt("Впишите номер студента, которого хотите записать: ", 1, students.Count);
             ShowCourses(courses);
-            Console.Write("Впишите номер курса, куда хотите записать студента: ");
-            int course_num = int.Parse(Console.ReadLine());
-            students[st_num-1].courses.Add(courses[course_num-1]);
-            courses[course_num-1].students.Add(students[st_num-1]);
+            int course_num = GetInt("Впишите номер курса, куда хотите записать студента: ", 1, courses.Count);
+            Student student = students[st_num - 1];
+            Course course = courses[course_num - 1];
+            if (student.courses.Contains(course))
+            {
+                Console.WriteLine("Студент уже записан на этот курс!");
+                return;
+            }
+            student.courses.Add(course);
+            course.students.Add(student);
+            Console.WriteLine($"Студент {student.name} записан на курс {course.name}.");
         }
-        static void AddCourse(List <Teacher> teachers, List <Course> courses)
+        static void AddCourse(List<Teacher> teachers, List<Course> courses)
         {
-            Console.Write("Введите название курса: ");
-            string name = Console.ReadLine();
+            if (!CheckExistTeachers(teachers))
+            {
+                return;
+            }
+            string name = GetString("Введите название курса: ");
             Console.WriteLine("Все преподаватели:");
             ShowTeachers(teachers);
-            Console.Write("Впишите номер того, кто будет вести этот курс: ");
-            int num = int.Parse(Console.ReadLine());
+            int num = GetInt("Впишите номер того, кто будет вести этот курс: ", 1, teachers.Count);
             Teacher teacher = teachers[num - 1];
             Course course = new Course(name, teacher);
             courses.Add(course);
+            teacher.courses.Add(course);
             Console.WriteLine($"Курс {name} с учителем {teacher.name} успешно добавлен! ");
         }
         static void AddTeachers(List<Teacher> teachers)
         {
-            Console.Write("Введите имя преподавателя: ");
-            string name = Console.ReadLine();
-            Console.Write("Введите возраст преподавателя: ");
-            int age = int.Parse(Console.ReadLine());
+            string name = GetString("Введите имя преподавателя: ");
+            int age = GetInt("Введите возраст преподавателя: ", 20, 100);
             Teacher teacher = new Teacher(name, age);
             teachers.Add(teacher);
             Console.WriteLine($"Преподаватель {teacher.name} добавлен.");
@@ -157,6 +210,11 @@ namespace _3ISIP_424_Kytergin
         static void ShowStudents(List<Student> students)
         {
             int i = 1;
+            if (students.Count == 0)
+            {
+                Console.WriteLine("Список студентов пуст!");
+                return;
+            }
             Console.WriteLine("Список студентов:");
             foreach (Student st in students)
             {
@@ -167,6 +225,11 @@ namespace _3ISIP_424_Kytergin
         static void ShowTeachers(List<Teacher> teachers)
         {
             int i = 1;
+            if (teachers.Count == 0)
+            {
+                Console.WriteLine("Список преподавателей пуст!");
+                return;
+            }
             foreach (Teacher t in teachers)
             {
                 Console.WriteLine($"Преподаватель №{i}. {t.name}, {t.age} лет");
@@ -176,6 +239,11 @@ namespace _3ISIP_424_Kytergin
         static void ShowCourses(List<Course> courses)
         {
             int i = 1;
+            if (courses.Count == 0)
+            {
+                Console.WriteLine("Список курсов пуст!");
+                return;
+            }
             Console.WriteLine("Все курсы: ");
             foreach (Course course in courses)
             {
@@ -185,12 +253,9 @@ namespace _3ISIP_424_Kytergin
         }
         static void AddStudent(List<Student> students)
         {
-            Console.Write("Введите имя студента: ");
-            string name = Console.ReadLine();
-            Console.Write("Введите возраст студента: ");
+            string name = GetString("Введите имя студента: ");
             int age = GetInt("Введите возраст студента: ", 15, 100);
-            Console.Write("Введите группу студента: ");
-            string group = Console.ReadLine();
+            string group = GetString("Введите группу студента: ");
             Student student = new Student(name, age, group);
             students.Add(student);
             Console.WriteLine($"Студент {student.name} добавлен.");
@@ -213,12 +278,11 @@ namespace _3ISIP_424_Kytergin
                 this.group = group;
             }
             public List<Course> courses = new List<Course>();
-
         }
         public class Teacher : Person
         {
-        public List<Course> courses = new List<Course>();
-        public Teacher(string name, int age) : base(name, age)
+            public List<Course> courses = new List<Course>();
+            public Teacher(string name, int age) : base(name, age)
             {
             }
         }
