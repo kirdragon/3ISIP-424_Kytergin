@@ -11,15 +11,29 @@ namespace _3ISIP_424_Kytergin
         static void Main(string[] args)
         {
         }
-        class Person
+        public class Person
         {
-            int age;
-            string name;
+            public int age;
+            public string name;
             public Person(string name, int age)
             {
                 this.name = name;
                 this.age = age;
             }
+        }
+        public class Student: Person
+        {
+            public string group;
+            public Student(string name, int age, string group) : base(name, age)
+            {
+                this.group = group;
+            }
+        }
+        public class Course
+        {
+            string name;
+            string teacher;
+            List<Student> students = new List<Student>();
         }
     }
 }
