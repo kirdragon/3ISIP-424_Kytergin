@@ -10,6 +10,58 @@ namespace _3ISIP_424_Kytergin
     {
         static void Main(string[] args)
         {
+            while (true)
+            {
+                Console.WriteLine("\n   СИСТЕМА УПРАВЛЕНИЯ УНИВЕРСИТЕТОМ   ");
+                Console.WriteLine("1. Добавить студента");
+                Console.WriteLine("2. Показать всех студентов");
+                Console.WriteLine("3. Добавить преподавателя");
+                Console.WriteLine("4. Показать всех преподавателей");
+                Console.WriteLine("5. Создать курс");
+                Console.WriteLine("6. Показать все курсы");
+                Console.WriteLine("7. Записать студента на курс");
+                Console.WriteLine("8. Показать курсы студента");
+                Console.WriteLine("9. Показать студентов курса");
+                Console.WriteLine("0. Выход");
+                Console.Write("Выберите действие: ");
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        // Добавление студента
+                        break;
+                    case "2":
+                        // Вывод студентов
+                        break;
+                    case "3":
+                        // Добавление преподавателя
+                        break;
+                    case "4":
+                        // Вывод преподавателей
+                        break;
+                    case "5":
+                        // Создание курса
+                        break;
+                    case "6":
+                        // Вывод курсов
+                        break;
+                    case "7":
+                        // Запись студента на курс
+                        break;
+                    case "8":
+                        // Курсы конкретного студента
+                        break;
+                    case "9":
+                        // Студенты конкретного курса
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Неверный пункт меню!");
+                        break;
+                }
+            }
         }
         public class Person
         {
