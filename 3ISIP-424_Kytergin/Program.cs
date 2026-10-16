@@ -10,6 +10,12 @@ namespace _3ISIP_424_Kytergin
     {
         static void Main(string[] args)
         {
+            string name;
+            int age;
+            string group;
+            List<Student> students = new List<Student>();
+            List<Teacher> teachers = new List<Teacher>();
+            List<Course> courses = new List<Course>();
             while (true)
             {
                 Console.WriteLine("\n   СИСТЕМА УПРАВЛЕНИЯ УНИВЕРСИТЕТОМ   ");
@@ -29,9 +35,18 @@ namespace _3ISIP_424_Kytergin
                 switch (choice)
                 {
                     case "1":
-                        // Добавление студента
+                        Console.Write("Введите имя студента: ");
+                        name = Console.ReadLine();
+                        Console.Write("Введите возраст студента: ");
+                        age = int.Parse(Console.ReadLine());
+                        Console.Write("Введите группу студента: ");
+                        group = Console.ReadLine();
+                        Student student = new Student(name, age, group);
+                        students.Add(student);
+                        Console.WriteLine($"Студент {student.name} добавлен.");
                         break;
                     case "2":
+                    
                         // Вывод студентов
                         break;
                     case "3":
