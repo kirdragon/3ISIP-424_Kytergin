@@ -46,8 +46,7 @@ namespace _3ISIP_424_Kytergin
                         ShowTeachers(teachers);
                         break;
                     case "5":
-                        Console.Write("Введите название курса: ");
-
+                        AddCourse(teachers, courses);
                         break;
                     case "6":
                         // Вывод курсов
@@ -68,6 +67,18 @@ namespace _3ISIP_424_Kytergin
                         break;
                 }
             }
+        }
+        static void AddCourse(List <Teacher> teachers, List <Course> courses)
+        {
+            Console.Write("Введите название курса: ");
+            string name = Console.ReadLine();
+            Console.WriteLine("Все преподаватели:");
+            ShowTeachers(teachers);
+            Console.Write("Впишите номер того, кто будет вести этот курс: ");
+            int num = int.Parse(Console.ReadLine());
+            Teacher teacher = teachers[num - 1];
+            Course course = new Course(name, teacher);
+            Console.WriteLine($"Курс {name} с учителем {teacher.name} успешно добавлен! ");
         }
         static void AddTeachers(List<Teacher> teachers)
         {
