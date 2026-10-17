@@ -19,6 +19,7 @@ namespace _3ISIP_424_Kytergin
             Armor steelArmor = new Armor("Стальные доспехи", 10);
             Armor legendaryArmor = new Armor("Легендарные доспехи", 20);
 
+            Potion potion = new Potion("Лечебное зелье");
             int choice;
             while (true)
             {
@@ -28,6 +29,12 @@ namespace _3ISIP_424_Kytergin
                 switch (choice)
                 {
                     case 1:
+                        int game_event = random.Next(1, 2);
+                        if (game_event == 0)
+                        {
+                            Console.WriteLine("Ты получаешь сундук!");
+
+                        }
                         break;
 
                     case 2:
@@ -167,6 +174,14 @@ namespace _3ISIP_424_Kytergin
         {
             Name = name;
             Protection = protection;
+        }
+    }
+    class Potion
+    {
+        string Name { get; set; }
+        public Potion(string name)
+        {
+            Name = name;
         }
     }
 }
