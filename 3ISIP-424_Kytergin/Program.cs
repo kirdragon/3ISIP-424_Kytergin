@@ -20,24 +20,59 @@ namespace _3ISIP_424_Kytergin
             Armor legendaryArmor = new Armor("Легендарные доспехи", 20);
 
             Potion potion = new Potion("Лечебное зелье");
-            List <string> inventory = new List<string>();
+            List <Weapon> weapons = new List<Weapon>()
+            {
+                rustySword,
+                steelSword,
+                legendarySword
+            };
+            List <Item> inventory = new List<Item>();
             int choice;
             while (true)
             {
                 Console.WriteLine("1. Начать игру");
                 Console.WriteLine("2. Выйти");
-                choice = GetInt("Выбор: ", 1, 2);
+                choice = GetInt("Выбор: ", 1, 3);
                 switch (choice)
                 {
                     case 1:
                         int game_event = random.Next(1, 2);
-                        if (game_event == 0)
+                        if (game_event == 1)
                         {
                             Console.WriteLine("Ты получаешь сундук!");
                             int drop_chance = random.Next(1, 101);
                             if (drop_chance <=20)
                             {
+                                inventory.Add(potion);
+                                Console.WriteLine("Из него тебе выпадает лечебное зелье!");
+                            }
+                            else if (drop_chance >20 && drop_chance <=70)
+                            {
+                                int weapon_chance = random.Next(1, 3);
+                                Console.WriteLine($"Тебе досталось оружие {weapons[weapon_chance].Name}");
+                                if (!inventory.Any(item => item is Weapon))
+                                {
+                                    Console.WriteLine("У тебя не было оружия, поэтому ты автоматически экипировал новое.");
+                                    inventory.Add(weapons[weapon_chance]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"1. Заменить текущее оружие ({inventory.First(item => item is Weapon).Name})");
+                                    Console.WriteLine("2. Отказаться");
+                                    int weapon_choice = GetInt("Выбор: ", 1, 2);
 
+                                    if (weapon_choice == 1)
+                                    {
+                                        inventory.Remove(inventory.First(item => item is Weapon));
+                                        inventory.Add(weapons[weapon_chance]);
+                                        Console.WriteLine($"Ты экипировал {weapons[weapon_chance]}");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Ты остался со старым оружием - {inventory.First(item => item is Weapon).Name}");
+                                    }
+
+                                }
                             }
                         }
                         else
