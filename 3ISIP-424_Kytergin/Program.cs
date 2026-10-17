@@ -51,7 +51,7 @@ namespace _3ISIP_424_Kytergin
                             if (drop_chance <=20)
                             {
                                 Console.WriteLine("Из него тебе выпадает лечебное зелье!");
-
+                                player.Health = 100;
                             }
                             else if (drop_chance >20 && drop_chance <=70)
                             {
