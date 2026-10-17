@@ -20,6 +20,7 @@ namespace _3ISIP_424_Kytergin
             Armor legendaryArmor = new Armor("Легендарные доспехи", 20);
 
             Potion potion = new Potion("Лечебное зелье");
+            List <string> inventory = new List<string>();
             int choice;
             while (true)
             {
@@ -33,7 +34,15 @@ namespace _3ISIP_424_Kytergin
                         if (game_event == 0)
                         {
                             Console.WriteLine("Ты получаешь сундук!");
+                            int drop_chance = random.Next(1, 101);
+                            if (drop_chance <=20)
+                            {
 
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("На тебя напал враг!");
                         }
                         break;
 
@@ -156,32 +165,34 @@ namespace _3ISIP_424_Kytergin
             Defense = (int)(Defense * 0.6);
         }
     }
-    class Weapon
+    class Item
     {
         public string Name { get; set; }
-        public int Damage { get; set; }
-        public Weapon(string name, int damage)
+        public Item(string name)
         {
             Name = name;
+        }
+    }
+    class Weapon : Item
+    {
+        public int Damage { get; set; }
+        public Weapon(string name, int damage) : base(name)
+        {
             Damage = damage;
         }
     }
-    class Armor
+    class Armor : Item
     {
-        public string Name { get; set; }
         public int Protection { get; set; }
-        public Armor(string name, int protection)
+        public Armor(string name, int protection) : base (name)
         {
-            Name = name;
             Protection = protection;
         }
     }
-    class Potion
+    class Potion : Item
     {
-        string Name { get; set; }
-        public Potion(string name)
+        public Potion(string name) : base(name) 
         {
-            Name = name;
         }
     }
 }
