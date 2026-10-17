@@ -12,4 +12,24 @@ namespace _3ISIP_424_Kytergin
         {
         }
     }
+    class Weapon
+    {
+        public string Name { get; set; }
+        public string Damage { get; set; }
+        public Weapon(string name, string damage)
+        {
+            Name = name;
+            Damage = damage;
+        }
+    }
+    class Armor
+    {
+        public string Name { get; set; }
+        public string Protection { get; set; }
+        public Armor(string name, string protection)
+        {
+            Name = name;
+            Protection = protection;
+        }
+    }
 }
