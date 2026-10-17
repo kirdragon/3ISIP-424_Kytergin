@@ -17,6 +17,7 @@ namespace _3ISIP_424_Kytergin
             Armor leatherArmor = new Armor("Кожаная броня", 5);
             Armor steelArmor = new Armor("Стальные доспехи", 10);
             Armor legendaryArmor = new Armor("Легендарные доспехи", 20);
+            Player player = new Player("Игрок", 100, 10, 5, rustySword, leatherArmor);
         }
     }
     class Entity
@@ -41,6 +42,35 @@ namespace _3ISIP_424_Kytergin
         {
             this.weapon = weapon;
             this.armor = armor;
+        }
+    }
+    class Enemy : Entity
+    {
+        public Enemy(string name, int health, int attack, int defense) : base(name, health, attack, defense)
+        {
+        }
+    }
+    class Goblin : Enemy
+    {
+        public int CriticalChance { get; set; }
+        public Goblin(string name, int health, int attack, int defense, int criticalChance) : base(name, health, attack, defense)
+        {
+            CriticalChance = criticalChance;
+        }
+
+    }
+    class Skeleton : Enemy
+    {
+        public Skeleton(string name, int health, int attack, int defense) : base(name, health, attack, defense)
+        {
+        }
+    }
+    class Mag : Enemy
+    {
+        public int FreezChance { get; set; }
+        public Mag(string name, int health, int attack, int defense, int freezeChance) : base(name, health, attack, defense)
+        {
+            FreezChance = freezeChance;
         }
     }
     class Weapon
