@@ -17,7 +17,6 @@ namespace _3ISIP_424_Kytergin
             Armor leatherArmor = new Armor("Кожаная броня", 5);
             Armor steelArmor = new Armor("Стальные доспехи", 10);
             Armor legendaryArmor = new Armor("Легендарные доспехи", 20);
-            Player player = new Player("Игрок", 100, 10, 5, rustySword, leatherArmor);
         }
     }
     class Entity
@@ -38,7 +37,7 @@ namespace _3ISIP_424_Kytergin
     {
         public Weapon weapon;
         public Armor armor;
-        public Player (string name, int health, int attack, int defense, Weapon weapon, Armor armor) : base(name, health, attack, defense)
+        public Player (Weapon weapon, Armor armor) : base("Игрок", 100, 10, 5)
         {
             this.weapon = weapon;
             this.armor = armor;
@@ -53,24 +52,67 @@ namespace _3ISIP_424_Kytergin
     class Goblin : Enemy
     {
         public int CriticalChance { get; set; }
-        public Goblin(string name, int health, int attack, int defense, int criticalChance) : base(name, health, attack, defense)
+        public Goblin() : base("Гоблин", 40, 12, 3)
         {
-            CriticalChance = criticalChance;
+            CriticalChance = 20;
         }
 
     }
     class Skeleton : Enemy
     {
-        public Skeleton(string name, int health, int attack, int defense) : base(name, health, attack, defense)
+        public Skeleton() : base("Скелет", 50, 10, 5)
         {
         }
     }
     class Mag : Enemy
     {
         public int FreezChance { get; set; }
-        public Mag(string name, int health, int attack, int defense, int freezeChance) : base(name, health, attack, defense)
+        public Mag() : base("Маг", 30, 15, 2)
         {
-            FreezChance = freezeChance;
+            FreezChance = 15;
+        }
+    }
+    class GoblinBoss : Goblin
+    {
+        public GoblinBoss() : base()
+        {
+            Name = "Гоблин-Босс";
+            Health = (int)(Health * 2.0);
+            Attack = (int)(Attack * 1.5);
+            Defense = (int)Math.Round(Defense * 1.2);
+            CriticalChance += 10;
+        }
+    }
+    class Kovalski : Skeleton
+    {
+        public Kovalski() : base()
+        {
+            Name = "Босс Ковальски";
+            Health = (int)(Health * 2.5);
+            Attack = (int)(Attack * 1.3);
+            Defense = (int)(Defense * 1.4);
+        }
+    }
+    class MagBoss : Mag
+    {
+        public MagBoss() : base()
+        {
+            Name = "Маг-Босс";
+            Health = (int)(Health * 1.8);
+            Attack = (int)(Attack * 1.6);
+            Defense = (int)(Defense * 1.1);
+            FreezChance += 10;
+        }
+    }
+    class Pestov : Skeleton
+    {
+        public int FreesChanceForPestov { get; set; } = 30;
+        public Pestov() : base()
+        {
+            Name = "Пестов";
+            Health = (int)(Health * 1.3);
+            Attack = (int)(Attack * 1.8);
+            Defense = (int)(Defense * 0.6);
         }
     }
     class Weapon
