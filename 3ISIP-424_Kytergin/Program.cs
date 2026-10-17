@@ -8,6 +8,7 @@ namespace _3ISIP_424_Kytergin
 {
     internal class Program
     {
+        static Random random = new Random();
         static void Main(string[] args)
         {
             Weapon rustySword = new Weapon("Ржавый меч", 5);
@@ -17,8 +18,41 @@ namespace _3ISIP_424_Kytergin
             Armor leatherArmor = new Armor("Кожаная броня", 5);
             Armor steelArmor = new Armor("Стальные доспехи", 10);
             Armor legendaryArmor = new Armor("Легендарные доспехи", 20);
+
+            int choice;
+            while (true)
+            {
+                Console.WriteLine("1. Начать игру");
+                Console.WriteLine("2. Выйти");
+                choice = GetInt("Выбор: ", 1, 2);
+                switch (choice)
+                {
+                    case 1:
+                        break;
+
+                    case 2:
+                        break;
+
+                    default:
+                        Console.WriteLine("Ошибка! Вводи только 1 или 2.");
+                        break;
+                }
+            }
+        }
+        static public int GetInt(string message, int min, int max)
+        {
+            Console.Write(message);
+            while (true)
+            {
+                if (int.TryParse(Console.ReadLine(), out int number) && number >= min && number <= max)
+                {
+                    return number;
+                }
+                Console.Write($"Вводи только целые числа от {min} до {max}\nВвод: ");
+            }
         }
     }
+
     class Entity
     {
         public string Name { get; set; }
@@ -37,7 +71,7 @@ namespace _3ISIP_424_Kytergin
     {
         public Weapon weapon;
         public Armor armor;
-        public Player (Weapon weapon, Armor armor) : base("Игрок", 100, 10, 5)
+        public Player(Weapon weapon, Armor armor) : base("Игрок", 100, 10, 5)
         {
             this.weapon = weapon;
             this.armor = armor;
