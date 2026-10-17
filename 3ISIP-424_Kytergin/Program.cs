@@ -33,6 +33,16 @@ namespace _3ISIP_424_Kytergin
             Defense = defense;
         }
     }
+    class Player : Entity
+    {
+        public Weapon weapon;
+        public Armor armor;
+        public Player (string name, int health, int attack, int defense, Weapon weapon, Armor armor) : base(name, health, attack, defense)
+        {
+            this.weapon = weapon;
+            this.armor = armor;
+        }
+    }
     class Weapon
     {
         public string Name { get; set; }
