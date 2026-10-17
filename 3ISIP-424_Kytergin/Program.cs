@@ -26,8 +26,15 @@ namespace _3ISIP_424_Kytergin
                 steelSword,
                 legendarySword
             };
+            List<Armor> armors = new List<Armor>()
+            {
+                leatherArmor,
+                steelArmor,
+                legendaryArmor
+            };
             List <Item> inventory = new List<Item>();
             int choice;
+            Player player = new Player(rustySword, leatherArmor);
             while (true)
             {
                 Console.WriteLine("1. Начать игру");
@@ -43,36 +50,32 @@ namespace _3ISIP_424_Kytergin
                             int drop_chance = random.Next(1, 101);
                             if (drop_chance <=20)
                             {
-                                inventory.Add(potion);
                                 Console.WriteLine("Из него тебе выпадает лечебное зелье!");
+
                             }
                             else if (drop_chance >20 && drop_chance <=70)
                             {
-                                int weapon_chance = random.Next(1, 3);
+                                int weapon_chance = random.Next(0, 3);
                                 Console.WriteLine($"Тебе досталось оружие {weapons[weapon_chance].Name}");
-                                if (!inventory.Any(item => item is Weapon))
+
+                                Console.WriteLine($"1. Заменить текущее оружие ({inventory.First(item => item is Weapon).Name})");
+                                Console.WriteLine("2. Отказаться");
+                                int weapon_choice = GetInt("Выбор: ", 1, 2);
+                                if (weapon_choice == 1)
                                 {
-                                    Console.WriteLine("У тебя не было оружия, поэтому ты автоматически экипировал новое.");
+                                    inventory.Remove(inventory.First(item => item is Weapon));
                                     inventory.Add(weapons[weapon_chance]);
-                                }
+                                    Console.WriteLine($"Ты экипировал {weapons[weapon_chance]}");
+                                 }
                                 else
                                 {
-                                    Console.WriteLine($"1. Заменить текущее оружие ({inventory.First(item => item is Weapon).Name})");
-                                    Console.WriteLine("2. Отказаться");
-                                    int weapon_choice = GetInt("Выбор: ", 1, 2);
-
-                                    if (weapon_choice == 1)
-                                    {
-                                        inventory.Remove(inventory.First(item => item is Weapon));
-                                        inventory.Add(weapons[weapon_chance]);
-                                        Console.WriteLine($"Ты экипировал {weapons[weapon_chance]}");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine($"Ты остался со старым оружием - {inventory.First(item => item is Weapon).Name}");
-                                    }
-
-                                }
+                                    Console.WriteLine($"Ты остался со старым оружием - {inventory.First(item => item is Weapon).Name}");
+                                 }                               
+                            }
+                            else
+                            {
+                            int armor_chance = random.Next(0,3);
+                            Armor droppedArmor = armors[armor_chance];
                             }
                         }
                         else
