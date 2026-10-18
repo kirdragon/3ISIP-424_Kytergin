@@ -25,13 +25,38 @@ namespace _3ISIP_424_Kytergin
                 steelSword,
                 legendarySword
             };
+
             List<Armor> armors = new List<Armor>()
             {
                 leatherArmor,
                 steelArmor,
                 legendaryArmor
             };
+
+            List<Enemy> bosses = new List<Enemy>()
+            {
+                new GoblinBoss(),
+                new Kovalski(),
+                new MagBoss(),
+                new Pestov()
+            };
+
+            List<Enemy> enemies = new List<Enemy>()
+            {
+                new Goblin(),
+                new Skeleton(),
+                new Mag()
+            };
+
             int choice;
+            int turn_count = 0;
+
+            int random_enemy;
+            int random_boss;
+            Enemy current_enemy;
+
+            int game_event;
+
             Player player = new Player(rustySword, leatherArmor);
             while (true)
             {
@@ -41,14 +66,22 @@ namespace _3ISIP_424_Kytergin
                 switch (choice)
                 {
                     case 1:
-                        int game_event = random.Next(1, 3);
+                        turn_count++;
+                        if (turn_count % 10 == 0)
+                        {
+                            game_event = 2;
+                        }
+                        else
+                        {
+                            game_event = random.Next(1, 3);
+                        }
                         if (game_event == 1)
                         {
                             Console.WriteLine("Ты получаешь сундук!");
                             int drop_chance = random.Next(1, 101);
                             if (drop_chance <=20)
                             {
-                                Console.WriteLine("Из него тебе выпадает лечебное зелье!");
+                                Console.WriteLine("Из него тебе выпадает лечебное зелье! Теперь у тебя 100 HP");
                                 player.Health = 100;
                             }
                             else if (drop_chance >20 && drop_chance <=70)
@@ -91,15 +124,29 @@ namespace _3ISIP_424_Kytergin
                         else
                         {
                             Console.WriteLine("На тебя напал враг!");
+                            if (turn_count % 10 == 0)
+                            {
+                                random_boss = random.Next(0, bosses.Count);
+                                current_enemy = bosses[random_boss];
+                                Console.WriteLine($"Это оказался {current_enemy.Name}");
+                            }
+                            else
+                            {
+                                random_enemy = random.Next(0, 3);
+                                current_enemy = enemies[random_enemy];
+                                Console.WriteLine($"Это оказался {current_enemy.Name}");
+                            }
+                            int player_choice = GetInt("1. Атаковать\n2. Попытаться уклониться\nВыбор: ", 1, 2);
+                            if (player_choice == 1)
+                            {
+
+                            }
                         }
                         break;
 
                     case 2:
-                        break;
-
-                    default:
-                        Console.WriteLine("Ошибка! Вводи только 1 или 2.");
-                        break;
+                    Console.WriteLine("Выход из игры...");
+                        return;
                 }
             }
         }
