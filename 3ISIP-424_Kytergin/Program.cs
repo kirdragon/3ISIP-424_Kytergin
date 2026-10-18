@@ -136,10 +136,45 @@ namespace _3ISIP_424_Kytergin
                                 current_enemy = enemies[random_enemy];
                                 Console.WriteLine($"Это оказался {current_enemy.Name}");
                             }
-                            int player_choice = GetInt("1. Атаковать\n2. Попытаться уклониться\nВыбор: ", 1, 2);
-                            if (player_choice == 1)
+                            while (player.Health > 0 && current_enemy.Health > 0)
                             {
+                                int player_choice = GetInt("1. Атаковать\n2. Попытаться уклониться\nВыбор: ", 1, 2);
+                                if (player_choice == 1)
+                                {
+                                    current_enemy.Health -= player.weapon.Damage+ player.Attack;
+                                    Console.WriteLine($"Ты атаковал {current_enemy.Name} с помощью {player.weapon.Name} и у него осталось {current_enemy.Health}");
+                                    if (current_enemy.Health <= 0)
+                                    {
+                                        Console.WriteLine($"Ты победил {current_enemy.Name}!");
+                                        break;
+                                    }
+                                    if (current_enemy.Attack - player.armor.Protection > 0)
+                                    {
+                                        player.Health -= current_enemy.Attack - player.armor.Protection;
+                                        Console.WriteLine($"{current_enemy.Name} атаковал тебя и у тебя осталось {player.Health}");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"{current_enemy.Name} атаковал тебя, но твоя броня все впитала!");
+                                    }
+                                }
+                                else
+                                {
+                                    int chance = random.Next(1, 101);
+                                    if (chance<=40)
+                                    {
+                                        Console.WriteLine($"Ты уклонился от атаки {current_enemy.Name}!");
+                                    }
+                                    else
+                                    {
+                                        int weakness = random.Next(70, 101);
+                                        int absorbed_damage = player.armor.Protection * weakness / 100;
+                                        int weakened_attack = Math.Max(0, current_enemy.Attack - absorbed_damage);
+                                        player.Health -= weakened_attack;
+                                        Console.WriteLine($"Тебе не удалось уклониться от атаки {current_enemy.Name}, но благодаря твоей броне ты получил пониженный урон - {weakened_attack}!");
 
+                                    }
+                                }
                             }
                         }
                         break;
