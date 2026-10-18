@@ -19,7 +19,6 @@ namespace _3ISIP_424_Kytergin
             Armor steelArmor = new Armor("Стальные доспехи", 10);
             Armor legendaryArmor = new Armor("Легендарные доспехи", 20);
 
-            Potion potion = new Potion("Лечебное зелье");
             List <Weapon> weapons = new List<Weapon>()
             {
                 rustySword,
@@ -74,8 +73,22 @@ namespace _3ISIP_424_Kytergin
                             }
                             else
                             {
-                            int armor_chance = random.Next(0,3);
-                            Armor droppedArmor = armors[armor_chance];
+                                int armor_chance = random.Next(0, 3);
+                                Console.WriteLine($"Тебе досталась броня {armors[armor_chance].Name}");
+
+                                Console.WriteLine($"1. Заменить текущую броню ({inventory.First(item => item is Armor).Name})");
+                                Console.WriteLine("2. Отказаться");
+                                int armor_choice = GetInt("Выбор: ", 1, 2);
+                                if (armor_choice == 1)
+                                {
+                                    inventory.Remove(inventory.First(item => item is Armor));
+                                    inventory.Add(armors[armor_chance]);
+                                    Console.WriteLine($"Ты экипировал {armors[armor_chance]}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Ты остался со старой броней - {inventory.First(item => item is Armor).Name}");
+                                }
                             }
                         }
                         else
@@ -225,12 +238,6 @@ namespace _3ISIP_424_Kytergin
         public Armor(string name, int protection) : base (name)
         {
             Protection = protection;
-        }
-    }
-    class Potion : Item
-    {
-        public Potion(string name) : base(name) 
-        {
         }
     }
 }
