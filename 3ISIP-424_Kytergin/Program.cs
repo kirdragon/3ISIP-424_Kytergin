@@ -31,18 +31,17 @@ namespace _3ISIP_424_Kytergin
                 steelArmor,
                 legendaryArmor
             };
-            List <Item> inventory = new List<Item>();
             int choice;
             Player player = new Player(rustySword, leatherArmor);
             while (true)
             {
                 Console.WriteLine("1. Начать игру");
                 Console.WriteLine("2. Выйти");
-                choice = GetInt("Выбор: ", 1, 3);
+                choice = GetInt("Выбор: ", 1, 2);
                 switch (choice)
                 {
                     case 1:
-                        int game_event = random.Next(1, 2);
+                        int game_event = random.Next(1, 3);
                         if (game_event == 1)
                         {
                             Console.WriteLine("Ты получаешь сундук!");
@@ -57,18 +56,17 @@ namespace _3ISIP_424_Kytergin
                                 int weapon_chance = random.Next(0, 3);
                                 Console.WriteLine($"Тебе досталось оружие {weapons[weapon_chance].Name}");
 
-                                Console.WriteLine($"1. Заменить текущее оружие ({inventory.First(item => item is Weapon).Name})");
+                                Console.WriteLine($"1. Заменить текущее оружие ({player.weapon.Name})");
                                 Console.WriteLine("2. Отказаться");
                                 int weapon_choice = GetInt("Выбор: ", 1, 2);
                                 if (weapon_choice == 1)
-                                {
-                                    inventory.Remove(inventory.First(item => item is Weapon));
-                                    inventory.Add(weapons[weapon_chance]);
-                                    Console.WriteLine($"Ты экипировал {weapons[weapon_chance]}");
+                                {                                    
+                                    player.weapon = weapons[weapon_chance];
+                                    Console.WriteLine($"Ты экипировал {player.weapon.Name}");
                                  }
                                 else
                                 {
-                                    Console.WriteLine($"Ты остался со старым оружием - {inventory.First(item => item is Weapon).Name}");
+                                    Console.WriteLine($"Ты остался со старым оружием - {player.weapon.Name}");
                                  }                               
                             }
                             else
@@ -76,18 +74,17 @@ namespace _3ISIP_424_Kytergin
                                 int armor_chance = random.Next(0, 3);
                                 Console.WriteLine($"Тебе досталась броня {armors[armor_chance].Name}");
 
-                                Console.WriteLine($"1. Заменить текущую броню ({inventory.First(item => item is Armor).Name})");
+                                Console.WriteLine($"1. Заменить текущую броню ({player.armor.Name})");
                                 Console.WriteLine("2. Отказаться");
                                 int armor_choice = GetInt("Выбор: ", 1, 2);
                                 if (armor_choice == 1)
-                                {
-                                    inventory.Remove(inventory.First(item => item is Armor));
-                                    inventory.Add(armors[armor_chance]);
-                                    Console.WriteLine($"Ты экипировал {armors[armor_chance]}");
+                                {                                    
+                                    player.armor = armors[armor_chance];
+                                    Console.WriteLine($"Ты экипировал {player.armor.Name}");
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"Ты остался со старой броней - {inventory.First(item => item is Armor).Name}");
+                                    Console.WriteLine($"Ты остался со старой броней - {player.armor.Name}");
                                 }
                             }
                         }
