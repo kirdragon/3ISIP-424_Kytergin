@@ -138,7 +138,7 @@ namespace _3ISIP_424_Kytergin
                             }
                             while (player.Health > 0 && current_enemy.Health > 0)
                             {
-                                int player_choice = GetInt("1. Атаковать\n2. Попытаться уклониться\nВыбор: ", 1, 2);
+                                int player_choice = GetInt($"Ты имеешь {player.Health} Hp\nТвое оружие наносит {player.weapon.Damage} урона\nТвоя броня предоставляет как минимум {player.armor.Protection * 0.7} защиты\n\nТвой враг - {current_enemy.Name}\nОн имеет {current_enemy.Health} Hp\n и наносит {current_enemy.Attack} урона\n1. Атаковать\n2. Попытаться уклониться\nВыбор: ", 1, 2);
                                 if (player_choice == 1)
                                 {
                                     current_enemy.Health -= player.weapon.Damage+ player.Attack;
@@ -148,20 +148,12 @@ namespace _3ISIP_424_Kytergin
                                         Console.WriteLine($"Ты победил {current_enemy.Name}!");
                                         break;
                                     }
-                                    if (current_enemy.Attack - player.armor.Protection > 0)
-                                    {
-                                        player.Health -= current_enemy.Attack - player.armor.Protection;
-                                        Console.WriteLine($"{current_enemy.Name} атаковал тебя и у тебя осталось {player.Health}");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine($"{current_enemy.Name} атаковал тебя, но твоя броня все впитала!");
-                                    }
+                                    EnemyAttack(player, current_enemy, player_choice);
                                 }
                                 else
                                 {
                                     int chance = random.Next(1, 101);
-                                    if (chance<=40)
+                                    if (chance <= 40)
                                     {
                                         Console.WriteLine($"Ты уклонился от атаки {current_enemy.Name}!");
                                     }
@@ -170,9 +162,22 @@ namespace _3ISIP_424_Kytergin
                                         int weakness = random.Next(70, 101);
                                         int absorbed_damage = player.armor.Protection * weakness / 100;
                                         int weakened_attack = Math.Max(0, current_enemy.Attack - absorbed_damage);
-                                        player.Health -= weakened_attack;
-                                        Console.WriteLine($"Тебе не удалось уклониться от атаки {current_enemy.Name}, но благодаря твоей броне ты получил пониженный урон - {weakened_attack}!");
-
+                                        if (weakened_attack == 0)
+                                        {
+                                            Console.WriteLine($"{current_enemy.Name} атаковал тебя, но твоя броня полностью поглотила урон!");
+                                        }
+                                        else
+                                        {
+                                            player.Health -= weakened_attack;
+                                            if (player.Health <= 0)
+                                            {
+                                                Console.WriteLine("Ты погиб! Игра окончена.");
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine($"Тебе не удалось уклониться от атаки {current_enemy.Name}, но благодаря твоей броне ты получил пониженный урон - {weakened_attack}!");
+                                            }  
+                                        }
                                     }
                                 }
                             }
@@ -183,6 +188,23 @@ namespace _3ISIP_424_Kytergin
                     Console.WriteLine("Выход из игры...");
                         return;
                 }
+            }
+        }
+        static public void EnemyAttack(Player player, Enemy current_enemy, int choice)
+        {
+            if (current_enemy.Attack - player.armor.Protection > 0)
+            {
+                player.Health -= current_enemy.Attack - player.armor.Protection;
+                Console.WriteLine($"{current_enemy.Name} атаковал тебя и у тебя осталось {player.Health}");
+            }
+            else
+            {
+                Console.WriteLine($"{current_enemy.Name} атаковал тебя, но твоя броня все впитала!");
+            }
+            if (player.Health <= 0)
+            {
+                Console.WriteLine($"Ты умер {current_enemy.Name}! Игра окончена.");
+                return;
             }
         }
         static public int GetInt(string message, int min, int max)
