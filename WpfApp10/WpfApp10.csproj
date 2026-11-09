@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Models\AdditionalOption.cs" />
     <Compile Include="Models\Car.cs" />
+    <Compile Include="Models\CarConfiguration.cs" />
     <Compile Include="Models\Engine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
