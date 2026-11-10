@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp10.Data;
@@ -141,6 +142,86 @@ namespace WpfApp10
             _configuration.ColorName = selectedColor;
             _configuration.ColorAdditionalPrice =
                 ColorCatalog.GetColors()[selectedColor];
+        }
+
+        private decimal CalculateTotalPrice()
+        {
+            decimal totalPrice = 0;
+
+            totalPrice += _configuration.SelectedCar.BasePrice;
+            totalPrice += _configuration.SelectedEngine.AdditionalPrice;
+            totalPrice += _configuration.ColorAdditionalPrice;
+
+            foreach (AdditionalOption option in _configuration.SelectedOptions)
+            {
+                totalPrice += option.Price;
+            }
+
+            return totalPrice;
+        }
+
+        private void ShowSummary()
+        {
+            StepContent.Children.Clear();
+
+            TextBlock title = new TextBlock();
+            title.Text = "Сводка выбранной конфигурации";
+            title.FontSize = 20;
+            title.FontWeight = FontWeights.Bold;
+            title.Margin = new Thickness(5, 5, 5, 20);
+
+            StepContent.Children.Add(title);
+
+            AddSummaryLine("Автомобиль: " + _configuration.SelectedCar.Name);
+            AddSummaryLine("Двигатель: " + _configuration.SelectedEngine.Name);
+            AddSummaryLine("Цвет: " + _configuration.ColorName);
+
+            AddSummaryLine("");
+            AddSummaryLine("Стоимость автомобиля: " +
+                _configuration.SelectedCar.BasePrice.ToString("N0") + " руб.");
+
+            AddSummaryLine("Доплата за двигатель: " +
+                _configuration.SelectedEngine.AdditionalPrice.ToString("N0") + " руб.");
+
+            AddSummaryLine("Доплата за цвет: " +
+                _configuration.ColorAdditionalPrice.ToString("N0") + " руб.");
+
+            AddSummaryLine("");
+            AddSummaryLine("Дополнительные опции:");
+
+            if (_configuration.SelectedOptions.Count == 0)
+            {
+                AddSummaryLine("Нет");
+            }
+            else
+            {
+                foreach (AdditionalOption option in _configuration.SelectedOptions)
+                {
+                    AddSummaryLine(option.Name + " — " +
+                        option.Price.ToString("N0") + " руб.");
+                }
+            }
+
+            AddSummaryLine("");
+
+            TextBlock totalPrice = new TextBlock();
+            totalPrice.Text = "ИТОГО: " +
+                CalculateTotalPrice().ToString("N0") + " руб.";
+            totalPrice.FontSize = 22;
+            totalPrice.FontWeight = FontWeights.Bold;
+            totalPrice.Margin = new Thickness(5, 15, 5, 5);
+
+            StepContent.Children.Add(totalPrice);
+        }
+
+        private void AddSummaryLine(string text)
+        {
+            TextBlock line = new TextBlock();
+            line.Text = text;
+            line.FontSize = 15;
+            line.Margin = new Thickness(5, 5, 5, 5);
+
+            StepContent.Children.Add(line);
         }
     }
 }
