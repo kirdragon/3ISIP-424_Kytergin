@@ -30,6 +30,8 @@ namespace WpfApp10
         private TextBox _emailTextBox;
         private Button _submitButton;
 
+        private int _currentStep = 1;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -38,12 +40,80 @@ namespace WpfApp10
             _cars = CarCatalog.GetCars();
             _options = CarCatalog.GetOptions();
 
-            ShowCarSelection();
+            BackButton.Click += BackButton_Click;
+            NextButton.Click += NextButton_Click;
+
+            ShowCurrentStep();
+        }
+
+        private void ShowCurrentStep()
+        {
+            StepTitle.Text = "Шаг " + _currentStep + " из 5";
+            WizardProgress.Value = _currentStep;
+
+            BackButton.IsEnabled = _currentStep > 1;
+            NextButton.Visibility = _currentStep == 5
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
+            if (_currentStep == 1)
+                ShowCarSelection();
+            else if (_currentStep == 2)
+                ShowOptions();
+            else if (_currentStep == 3)
+                ShowPriceSummary();
+            else if (_currentStep == 4)
+                ShowLoanCalculator();
+            else if (_currentStep == 5)
+                ShowContactForm();
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentStep == 1)
+            {
+                if (_configuration.SelectedCar == null ||
+                    _configuration.SelectedEngine == null)
+                {
+                    MessageBox.Show("Выберите автомобиль и двигатель.");
+                    return;
+                }
+            }
+
+            if (_currentStep < 5)
+            {
+                _currentStep++;
+                ShowCurrentStep();
+            }
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentStep == 5 && !IsContactFormValid())
+            {
+                MessageBoxResult result = MessageBox.Show(
+                    "Вы не заполнили все поля корректно. Покинуть страницу заявки?",
+                    "Подтверждение",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                );
+
+                if (result == MessageBoxResult.No)
+                    return;
+            }
+
+            if (_currentStep > 1)
+            {
+                _currentStep--;
+                ShowCurrentStep();
+            }
         }
 
         private void ShowCarSelection()
         {
             StepContent.Children.Clear();
+
+            Engine savedEngine = _configuration.SelectedEngine;
 
             TextBlock carLabel = new TextBlock();
             carLabel.Text = "Выберите автомобиль:";
@@ -66,7 +136,17 @@ namespace WpfApp10
             StepContent.Children.Add(engineLabel);
             StepContent.Children.Add(_engineComboBox);
 
-            _carComboBox.SelectedIndex = 0;
+            int carIndex = _configuration.SelectedCar == null
+                ? 0
+                : _cars.IndexOf(_configuration.SelectedCar);
+
+            _carComboBox.SelectedIndex = carIndex;
+
+            if (savedEngine != null &&
+                _configuration.SelectedCar.Engines.Contains(savedEngine))
+            {
+                _engineComboBox.SelectedItem = savedEngine;
+            }
         }
 
         private void CarComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -126,7 +206,9 @@ namespace WpfApp10
             {
                 CheckBox checkBox = new CheckBox();
 
-                checkBox.Content = option.Name + " — " + option.Price + " руб.";
+                checkBox.Content = option.Name + " — " +
+                    option.Price.ToString("N0") + " руб.";
+
                 checkBox.Margin = new Thickness(5, 8, 5, 8);
                 checkBox.IsChecked = _configuration.SelectedOptions.Contains(option);
 
@@ -201,23 +283,28 @@ namespace WpfApp10
             colorText.Margin = new Thickness(5);
 
             TextBlock basePriceText = new TextBlock();
-            basePriceText.Text = "Базовая стоимость: " + basePrice.ToString("N0") + " руб.";
+            basePriceText.Text = "Базовая стоимость: " +
+                basePrice.ToString("N0") + " руб.";
             basePriceText.Margin = new Thickness(5, 20, 5, 5);
 
             TextBlock enginePriceText = new TextBlock();
-            enginePriceText.Text = "Доплата за двигатель: " + enginePrice.ToString("N0") + " руб.";
+            enginePriceText.Text = "Доплата за двигатель: " +
+                enginePrice.ToString("N0") + " руб.";
             enginePriceText.Margin = new Thickness(5);
 
             TextBlock colorPriceText = new TextBlock();
-            colorPriceText.Text = "Доплата за цвет: " + colorPrice.ToString("N0") + " руб.";
+            colorPriceText.Text = "Доплата за цвет: " +
+                colorPrice.ToString("N0") + " руб.";
             colorPriceText.Margin = new Thickness(5);
 
             TextBlock optionsPriceText = new TextBlock();
-            optionsPriceText.Text = "Дополнительные опции: " + optionsPrice.ToString("N0") + " руб.";
+            optionsPriceText.Text = "Дополнительные опции: " +
+                optionsPrice.ToString("N0") + " руб.";
             optionsPriceText.Margin = new Thickness(5);
 
             TextBlock totalPriceText = new TextBlock();
-            totalPriceText.Text = "ИТОГО: " + CalculateTotalPrice().ToString("N0") + " руб.";
+            totalPriceText.Text = "ИТОГО: " +
+                CalculateTotalPrice().ToString("N0") + " руб.";
             totalPriceText.FontSize = 20;
             totalPriceText.FontWeight = FontWeights.Bold;
             totalPriceText.Margin = new Thickness(5, 25, 5, 5);
@@ -261,6 +348,7 @@ namespace WpfApp10
             monthsLabel.Margin = new Thickness(5);
 
             _loanMonthsComboBox = new ComboBox();
+
             _loanMonthsComboBox.Items.Add(12);
             _loanMonthsComboBox.Items.Add(24);
             _loanMonthsComboBox.Items.Add(36);
@@ -298,7 +386,8 @@ namespace WpfApp10
             if (_configuration == null)
                 return;
 
-            _configuration.DownPaymentPercent = (decimal)_downPaymentSlider.Value;
+            _configuration.DownPaymentPercent =
+                (decimal)_downPaymentSlider.Value;
 
             UpdateLoanCalculation();
         }
@@ -308,7 +397,8 @@ namespace WpfApp10
             if (_loanMonthsComboBox.SelectedItem == null)
                 return;
 
-            _configuration.LoanMonths = (int)_loanMonthsComboBox.SelectedItem;
+            _configuration.LoanMonths =
+                (int)_loanMonthsComboBox.SelectedItem;
 
             UpdateLoanCalculation();
         }
@@ -400,30 +490,44 @@ namespace WpfApp10
             ValidateContactForm();
         }
 
-        private void ValidateContactForm()
+        private bool IsContactFormValid()
         {
-            if (_nameTextBox == null || _phoneTextBox == null || _emailTextBox == null)
-                return;
+            if (_nameTextBox == null ||
+                _phoneTextBox == null ||
+                _emailTextBox == null)
+                return false;
 
             string name = _nameTextBox.Text.Trim();
             string phone = _phoneTextBox.Text;
             string email = _emailTextBox.Text.Trim();
 
             bool nameIsValid = name.Length >= 2;
+
             bool phoneIsValid = phone.Length >= 10 &&
                 phone.Length <= 15 &&
                 Regex.IsMatch(phone, @"^\d+$");
+
             bool emailIsValid = Regex.IsMatch(
                 email,
                 @"^[^@\s]+@[^@\s]+\.[^@\s]+$"
             );
 
-            _submitButton.IsEnabled =
-                nameIsValid && phoneIsValid && emailIsValid;
+            return nameIsValid && phoneIsValid && emailIsValid;
+        }
+
+        private void ValidateContactForm()
+        {
+            if (_submitButton == null)
+                return;
+
+            _submitButton.IsEnabled = IsContactFormValid();
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!IsContactFormValid())
+                return;
+
             _configuration.CustomerName = _nameTextBox.Text.Trim();
             _configuration.Phone = _phoneTextBox.Text;
             _configuration.Email = _emailTextBox.Text.Trim();
