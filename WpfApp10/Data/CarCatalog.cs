@@ -31,5 +31,15 @@ namespace WpfApp10.Data
                 })
             };
         }
+
+        public static List<AdditionalOption> GetOptions()
+        {
+            return new List<AdditionalOption>
+            {
+                new AdditionalOption("Подогрев сидений", 30000),
+                new AdditionalOption("Камера заднего вида", 45000),
+                new AdditionalOption("Панорамная крыша", 100000)
+            };
+        }
     }
 }

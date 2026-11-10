@@ -10,9 +10,11 @@ namespace WpfApp10
     {
         private CarConfiguration _configuration;
         private List<Car> _cars;
+        private List<AdditionalOption> _options;
 
         private ComboBox _carComboBox;
         private ComboBox _engineComboBox;
+        private ComboBox _colorComboBox;
 
         public MainWindow()
         {
@@ -20,6 +22,7 @@ namespace WpfApp10
 
             _configuration = new CarConfiguration();
             _cars = CarCatalog.GetCars();
+            _options = CarCatalog.GetOptions();
 
             ShowCarSelection();
         }
@@ -75,6 +78,69 @@ namespace WpfApp10
                 return;
 
             _configuration.SelectedEngine = selectedEngine;
+        }
+
+        private void ShowOptions()
+        {
+            StepContent.Children.Clear();
+
+            TextBlock colorLabel = new TextBlock();
+            colorLabel.Text = "Выберите цвет автомобиля:";
+            colorLabel.Margin = new Thickness(5);
+
+            _colorComboBox = new ComboBox();
+
+            Dictionary<string, decimal> colors = ColorCatalog.GetColors();
+
+            foreach (KeyValuePair<string, decimal> color in colors)
+            {
+                _colorComboBox.Items.Add(color.Key);
+            }
+
+            _colorComboBox.SelectedItem = _configuration.ColorName;
+            _colorComboBox.SelectionChanged += ColorComboBox_SelectionChanged;
+
+            TextBlock optionsLabel = new TextBlock();
+            optionsLabel.Text = "Дополнительные опции:";
+            optionsLabel.Margin = new Thickness(5, 25, 5, 10);
+
+            StepContent.Children.Add(colorLabel);
+            StepContent.Children.Add(_colorComboBox);
+            StepContent.Children.Add(optionsLabel);
+
+            foreach (AdditionalOption option in _options)
+            {
+                CheckBox checkBox = new CheckBox();
+
+                checkBox.Content = option.Name + " — " + option.Price + " руб.";
+                checkBox.Margin = new Thickness(5, 8, 5, 8);
+                checkBox.IsChecked = _configuration.SelectedOptions.Contains(option);
+
+                checkBox.Checked += delegate
+                {
+                    if (!_configuration.SelectedOptions.Contains(option))
+                        _configuration.SelectedOptions.Add(option);
+                };
+
+                checkBox.Unchecked += delegate
+                {
+                    _configuration.SelectedOptions.Remove(option);
+                };
+
+                StepContent.Children.Add(checkBox);
+            }
+        }
+
+        private void ColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_colorComboBox.SelectedItem == null)
+                return;
+
+            string selectedColor = _colorComboBox.SelectedItem.ToString();
+
+            _configuration.ColorName = selectedColor;
+            _configuration.ColorAdditionalPrice =
+                ColorCatalog.GetColors()[selectedColor];
         }
     }
 }
