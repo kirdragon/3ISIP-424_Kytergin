@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp10.Data;
@@ -160,68 +159,63 @@ namespace WpfApp10
             return totalPrice;
         }
 
-        private void ShowSummary()
+        private void ShowPriceSummary()
         {
             StepContent.Children.Clear();
 
-            TextBlock title = new TextBlock();
-            title.Text = "Сводка выбранной конфигурации";
-            title.FontSize = 20;
-            title.FontWeight = FontWeights.Bold;
-            title.Margin = new Thickness(5, 5, 5, 20);
+            decimal basePrice = _configuration.SelectedCar.BasePrice;
+            decimal enginePrice = _configuration.SelectedEngine.AdditionalPrice;
+            decimal colorPrice = _configuration.ColorAdditionalPrice;
 
-            StepContent.Children.Add(title);
+            decimal optionsPrice = 0;
 
-            AddSummaryLine("Автомобиль: " + _configuration.SelectedCar.Name);
-            AddSummaryLine("Двигатель: " + _configuration.SelectedEngine.Name);
-            AddSummaryLine("Цвет: " + _configuration.ColorName);
-
-            AddSummaryLine("");
-            AddSummaryLine("Стоимость автомобиля: " +
-                _configuration.SelectedCar.BasePrice.ToString("N0") + " руб.");
-
-            AddSummaryLine("Доплата за двигатель: " +
-                _configuration.SelectedEngine.AdditionalPrice.ToString("N0") + " руб.");
-
-            AddSummaryLine("Доплата за цвет: " +
-                _configuration.ColorAdditionalPrice.ToString("N0") + " руб.");
-
-            AddSummaryLine("");
-            AddSummaryLine("Дополнительные опции:");
-
-            if (_configuration.SelectedOptions.Count == 0)
+            foreach (AdditionalOption option in _configuration.SelectedOptions)
             {
-                AddSummaryLine("Нет");
-            }
-            else
-            {
-                foreach (AdditionalOption option in _configuration.SelectedOptions)
-                {
-                    AddSummaryLine(option.Name + " — " +
-                        option.Price.ToString("N0") + " руб.");
-                }
+                optionsPrice += option.Price;
             }
 
-            AddSummaryLine("");
+            TextBlock carText = new TextBlock();
+            carText.Text = "Автомобиль: " + _configuration.SelectedCar.Name;
+            carText.Margin = new Thickness(5);
 
-            TextBlock totalPrice = new TextBlock();
-            totalPrice.Text = "ИТОГО: " +
-                CalculateTotalPrice().ToString("N0") + " руб.";
-            totalPrice.FontSize = 22;
-            totalPrice.FontWeight = FontWeights.Bold;
-            totalPrice.Margin = new Thickness(5, 15, 5, 5);
+            TextBlock engineText = new TextBlock();
+            engineText.Text = "Двигатель: " + _configuration.SelectedEngine.Name;
+            engineText.Margin = new Thickness(5);
 
-            StepContent.Children.Add(totalPrice);
-        }
+            TextBlock colorText = new TextBlock();
+            colorText.Text = "Цвет: " + _configuration.ColorName;
+            colorText.Margin = new Thickness(5);
 
-        private void AddSummaryLine(string text)
-        {
-            TextBlock line = new TextBlock();
-            line.Text = text;
-            line.FontSize = 15;
-            line.Margin = new Thickness(5, 5, 5, 5);
+            TextBlock basePriceText = new TextBlock();
+            basePriceText.Text = "Базовая стоимость: " + basePrice.ToString("N0") + " руб.";
+            basePriceText.Margin = new Thickness(5, 20, 5, 5);
 
-            StepContent.Children.Add(line);
+            TextBlock enginePriceText = new TextBlock();
+            enginePriceText.Text = "Доплата за двигатель: " + enginePrice.ToString("N0") + " руб.";
+            enginePriceText.Margin = new Thickness(5);
+
+            TextBlock colorPriceText = new TextBlock();
+            colorPriceText.Text = "Доплата за цвет: " + colorPrice.ToString("N0") + " руб.";
+            colorPriceText.Margin = new Thickness(5);
+
+            TextBlock optionsPriceText = new TextBlock();
+            optionsPriceText.Text = "Дополнительные опции: " + optionsPrice.ToString("N0") + " руб.";
+            optionsPriceText.Margin = new Thickness(5);
+
+            TextBlock totalPriceText = new TextBlock();
+            totalPriceText.Text = "ИТОГО: " + CalculateTotalPrice().ToString("N0") + " руб.";
+            totalPriceText.FontSize = 20;
+            totalPriceText.FontWeight = FontWeights.Bold;
+            totalPriceText.Margin = new Thickness(5, 25, 5, 5);
+
+            StepContent.Children.Add(carText);
+            StepContent.Children.Add(engineText);
+            StepContent.Children.Add(colorText);
+            StepContent.Children.Add(basePriceText);
+            StepContent.Children.Add(enginePriceText);
+            StepContent.Children.Add(colorPriceText);
+            StepContent.Children.Add(optionsPriceText);
+            StepContent.Children.Add(totalPriceText);
         }
     }
 }
