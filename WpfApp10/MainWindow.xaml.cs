@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp10.Data;
@@ -23,6 +24,11 @@ namespace WpfApp10
         private TextBlock _downPaymentText;
         private TextBlock _loanAmountText;
         private TextBlock _monthlyPaymentText;
+
+        private TextBox _nameTextBox;
+        private TextBox _phoneTextBox;
+        private TextBox _emailTextBox;
+        private Button _submitButton;
 
         public MainWindow()
         {
@@ -337,7 +343,102 @@ namespace WpfApp10
             _monthlyPaymentText.Text =
                 "Ежемесячный платёж: " +
                 monthlyPayment.ToString("N0") + " руб.";
+        }
 
+        private void ShowContactForm()
+        {
+            StepContent.Children.Clear();
+
+            TextBlock nameLabel = new TextBlock();
+            nameLabel.Text = "Ваше имя:";
+            nameLabel.Margin = new Thickness(5);
+
+            _nameTextBox = new TextBox();
+            _nameTextBox.Margin = new Thickness(5);
+            _nameTextBox.Text = _configuration.CustomerName;
+            _nameTextBox.TextChanged += ContactFields_TextChanged;
+
+            TextBlock phoneLabel = new TextBlock();
+            phoneLabel.Text = "Номер телефона (только цифры):";
+            phoneLabel.Margin = new Thickness(5, 15, 5, 5);
+
+            _phoneTextBox = new TextBox();
+            _phoneTextBox.Margin = new Thickness(5);
+            _phoneTextBox.Text = _configuration.Phone;
+            _phoneTextBox.TextChanged += ContactFields_TextChanged;
+
+            TextBlock emailLabel = new TextBlock();
+            emailLabel.Text = "Электронная почта:";
+            emailLabel.Margin = new Thickness(5, 15, 5, 5);
+
+            _emailTextBox = new TextBox();
+            _emailTextBox.Margin = new Thickness(5);
+            _emailTextBox.Text = _configuration.Email;
+            _emailTextBox.TextChanged += ContactFields_TextChanged;
+
+            _submitButton = new Button();
+            _submitButton.Content = "Оформить заявку";
+            _submitButton.Width = 160;
+            _submitButton.Height = 35;
+            _submitButton.Margin = new Thickness(5, 25, 5, 5);
+            _submitButton.IsEnabled = false;
+            _submitButton.Click += SubmitButton_Click;
+
+            StepContent.Children.Add(nameLabel);
+            StepContent.Children.Add(_nameTextBox);
+            StepContent.Children.Add(phoneLabel);
+            StepContent.Children.Add(_phoneTextBox);
+            StepContent.Children.Add(emailLabel);
+            StepContent.Children.Add(_emailTextBox);
+            StepContent.Children.Add(_submitButton);
+
+            ValidateContactForm();
+        }
+
+        private void ContactFields_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ValidateContactForm();
+        }
+
+        private void ValidateContactForm()
+        {
+            if (_nameTextBox == null || _phoneTextBox == null || _emailTextBox == null)
+                return;
+
+            string name = _nameTextBox.Text.Trim();
+            string phone = _phoneTextBox.Text;
+            string email = _emailTextBox.Text.Trim();
+
+            bool nameIsValid = name.Length >= 2;
+            bool phoneIsValid = phone.Length >= 10 &&
+                phone.Length <= 15 &&
+                Regex.IsMatch(phone, @"^\d+$");
+            bool emailIsValid = Regex.IsMatch(
+                email,
+                @"^[^@\s]+@[^@\s]+\.[^@\s]+$"
+            );
+
+            _submitButton.IsEnabled =
+                nameIsValid && phoneIsValid && emailIsValid;
+        }
+
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            _configuration.CustomerName = _nameTextBox.Text.Trim();
+            _configuration.Phone = _phoneTextBox.Text;
+            _configuration.Email = _emailTextBox.Text.Trim();
+
+            MessageBox.Show(
+                "Заявка успешно оформлена!\n\n" +
+                "Имя: " + _configuration.CustomerName + "\n" +
+                "Телефон: " + _configuration.Phone + "\n" +
+                "Email: " + _configuration.Email + "\n\n" +
+                "Стоимость автомобиля: " +
+                CalculateTotalPrice().ToString("N0") + " руб.",
+                "Оформление заявки",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
         }
     }
 }
