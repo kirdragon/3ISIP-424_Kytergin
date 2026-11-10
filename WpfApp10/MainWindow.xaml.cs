@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp10.Data;
@@ -15,6 +16,13 @@ namespace WpfApp10
         private ComboBox _carComboBox;
         private ComboBox _engineComboBox;
         private ComboBox _colorComboBox;
+
+        private Slider _downPaymentSlider;
+        private ComboBox _loanMonthsComboBox;
+
+        private TextBlock _downPaymentText;
+        private TextBlock _loanAmountText;
+        private TextBlock _monthlyPaymentText;
 
         public MainWindow()
         {
@@ -216,6 +224,120 @@ namespace WpfApp10
             StepContent.Children.Add(colorPriceText);
             StepContent.Children.Add(optionsPriceText);
             StepContent.Children.Add(totalPriceText);
+        }
+
+        private void ShowLoanCalculator()
+        {
+            StepContent.Children.Clear();
+
+            TextBlock priceText = new TextBlock();
+            priceText.Text = "Стоимость автомобиля: " +
+                CalculateTotalPrice().ToString("N0") + " руб.";
+            priceText.Margin = new Thickness(5, 5, 5, 20);
+
+            TextBlock downPaymentLabel = new TextBlock();
+            downPaymentLabel.Text = "Первоначальный взнос:";
+            downPaymentLabel.Margin = new Thickness(5);
+
+            _downPaymentSlider = new Slider();
+            _downPaymentSlider.Minimum = 10;
+            _downPaymentSlider.Maximum = 80;
+            _downPaymentSlider.Value = (double)_configuration.DownPaymentPercent;
+            _downPaymentSlider.TickFrequency = 5;
+            _downPaymentSlider.IsSnapToTickEnabled = true;
+            _downPaymentSlider.ValueChanged += DownPaymentSlider_ValueChanged;
+
+            _downPaymentText = new TextBlock();
+            _downPaymentText.Margin = new Thickness(5, 5, 5, 20);
+
+            TextBlock monthsLabel = new TextBlock();
+            monthsLabel.Text = "Срок кредита:";
+            monthsLabel.Margin = new Thickness(5);
+
+            _loanMonthsComboBox = new ComboBox();
+            _loanMonthsComboBox.Items.Add(12);
+            _loanMonthsComboBox.Items.Add(24);
+            _loanMonthsComboBox.Items.Add(36);
+            _loanMonthsComboBox.Items.Add(48);
+            _loanMonthsComboBox.Items.Add(60);
+            _loanMonthsComboBox.Items.Add(72);
+            _loanMonthsComboBox.Items.Add(84);
+            _loanMonthsComboBox.Items.Add(96);
+
+            _loanMonthsComboBox.SelectedItem = _configuration.LoanMonths;
+            _loanMonthsComboBox.SelectionChanged += LoanMonthsComboBox_SelectionChanged;
+
+            _loanAmountText = new TextBlock();
+            _loanAmountText.Margin = new Thickness(5, 20, 5, 5);
+
+            _monthlyPaymentText = new TextBlock();
+            _monthlyPaymentText.FontSize = 18;
+            _monthlyPaymentText.FontWeight = FontWeights.Bold;
+            _monthlyPaymentText.Margin = new Thickness(5, 15, 5, 5);
+
+            StepContent.Children.Add(priceText);
+            StepContent.Children.Add(downPaymentLabel);
+            StepContent.Children.Add(_downPaymentSlider);
+            StepContent.Children.Add(_downPaymentText);
+            StepContent.Children.Add(monthsLabel);
+            StepContent.Children.Add(_loanMonthsComboBox);
+            StepContent.Children.Add(_loanAmountText);
+            StepContent.Children.Add(_monthlyPaymentText);
+
+            UpdateLoanCalculation();
+        }
+
+        private void DownPaymentSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (_configuration == null)
+                return;
+
+            _configuration.DownPaymentPercent = (decimal)_downPaymentSlider.Value;
+
+            UpdateLoanCalculation();
+        }
+
+        private void LoanMonthsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_loanMonthsComboBox.SelectedItem == null)
+                return;
+
+            _configuration.LoanMonths = (int)_loanMonthsComboBox.SelectedItem;
+
+            UpdateLoanCalculation();
+        }
+
+        private void UpdateLoanCalculation()
+        {
+            decimal totalPrice = CalculateTotalPrice();
+
+            decimal downPayment = totalPrice *
+                _configuration.DownPaymentPercent / 100;
+
+            decimal loanAmount = totalPrice - downPayment;
+
+            decimal annualRate = 12;
+            double monthlyRate = (double)(annualRate / 100 / 12);
+
+            int months = _configuration.LoanMonths;
+
+            double rateFactor = Math.Pow(1 + monthlyRate, months);
+
+            decimal monthlyPayment = loanAmount *
+                (decimal)(monthlyRate * rateFactor / (rateFactor - 1));
+
+            _downPaymentText.Text =
+                "Сумма первоначального взноса: " +
+                downPayment.ToString("N0") + " руб. (" +
+                _configuration.DownPaymentPercent.ToString("N0") + "%)";
+
+            _loanAmountText.Text =
+                "Сумма кредита: " + loanAmount.ToString("N0") + " руб.";
+
+            _monthlyPaymentText.Text =
+                "Ежемесячный платёж: " +
+                monthlyPayment.ToString("N0") + " руб.";
+
         }
     }
 }
