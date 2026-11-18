@@ -1,0 +1,62 @@
+﻿<Page x:Class="WpfApp10.Pages.ContactPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Оформление заявки">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+
+        <Grid Margin="20">
+            <StackPanel>
+
+                <TextBlock Text="Оформление заявки"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Margin="5,5,5,20"/>
+
+                <TextBlock Text="Ваше имя:"
+                           Margin="5"/>
+
+                <TextBox x:Name="CustomerNameTextBox"
+                         Height="35"
+                         Margin="5"
+                         FontSize="14"
+                         TextChanged="ContactFields_TextChanged"/>
+
+                <TextBlock Text="Номер телефона:"
+                           Margin="5,15,5,5"/>
+
+                <TextBox x:Name="PhoneTextBox"
+                         Height="35"
+                         Margin="5"
+                         FontSize="14"
+                         TextChanged="ContactFields_TextChanged"/>
+
+                <TextBlock Text="Электронная почта:"
+                           Margin="5,15,5,5"/>
+
+                <TextBox x:Name="EmailTextBox"
+                         Height="35"
+                         Margin="5"
+                         FontSize="14"
+                         TextChanged="ContactFields_TextChanged"/>
+
+                <TextBlock Text="Проверьте введённые данные перед отправкой заявки."
+                           TextWrapping="Wrap"
+                           Margin="5,20,5,10"
+                           Foreground="Gray"/>
+
+                <Button x:Name="SubmitButton"
+                        Content="Оформить заявку"
+                        Height="50"
+                        Margin="5,15,5,20"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        IsEnabled="False"
+                        Click="SubmitButton_Click"/>
+
+            </StackPanel>
+        </Grid>
+
+    </ScrollViewer>
+</Page>

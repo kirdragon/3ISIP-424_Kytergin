@@ -1,0 +1,23 @@
+﻿<Page x:Class="WpfApp10.Pages.CarPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Выбор автомобиля">
+
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock Text="Выберите автомобиль:"
+                       Margin="5"/>
+
+            <ComboBox x:Name="CarComboBox"
+                      Height="35"
+                      Margin="5"/>
+
+            <TextBlock Text="Выберите двигатель:"
+                       Margin="5,20,5,5"/>
+
+            <ComboBox x:Name="EngineComboBox"
+                      Height="35"
+                      Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Page>
