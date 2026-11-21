@@ -1,0 +1,33 @@
+﻿<Window x:Class="WpfApp10.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Интернет-магазин"
+        Height="550"
+        Width="850"
+        WindowStartupLocation="CenterScreen">
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top"
+                    Orientation="Horizontal"
+                    Margin="10">
+
+            <Button Content="Товары"
+                    Width="100"
+                    Margin="5"
+                    Click="Products_Click"/>
+
+            <Button Content="Корзина"
+                    Width="100"
+                    Margin="5"
+                    Click="Cart_Click"/>
+
+            <Button Content="Оформить заказ"
+                    Width="130"
+                    Margin="5"
+                    Click="Checkout_Click"/>
+        </StackPanel>
+
+        <Frame x:Name="MainFrame"
+               NavigationUIVisibility="Hidden"/>
+    </DockPanel>
+</Window>
