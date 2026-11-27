@@ -1,0 +1,36 @@
+﻿<Window x:Class="Cinema.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="кинотеатр"
+        Height="650" 
+        Width="1000"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    Background="#202B3A">
+            <TextBlock Text="Кино"
+                        Foreground="White"
+                        FontSize="25"
+                        FontWeight="Bold"
+                        VerticalAlignment="Center"
+                        Margin="20,0,40,0"/>
+            <Button Content="Главная"
+                    Width="100"
+                    Margin="5"/>
+            <Button Content="Войти"
+                    Width="100"
+                    Margin="5"/>
+            <Button Content="Регистрация"
+                    Width="100"
+                    Margin="5"/>
+        </StackPanel>
+        <Frame Grid.Row="1"
+                x:Name="MainFrame"
+                NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Window>
