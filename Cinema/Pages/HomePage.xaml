@@ -27,13 +27,68 @@
                     Width="180"
                     Height="35"
                     IsEditable="True"
-                    IsReadOnly="True"
+                    IsReadOnly="True"   
                     Text="Сортировка">
                     <ComboBoxItem Content="По названию"/>
                     <ComboBoxItem Content="По рейтингу"/>
                 </ComboBox>
             </StackPanel>
         </StackPanel>
+        <ScrollViewer Grid.Row="1"
+                VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="MoviesList">
 
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <Border Width="200"
+                                Margin="10"
+                                Padding="10"
+                                Background="White"
+                                CornerRadius="10">
+
+                            <StackPanel>
+
+                                <Image Height="230"
+                                   Source="{Binding ImagePath}"
+                                   Stretch="UniformToFill"/>
+
+                                <TextBlock Text="{Binding Name}"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Margin="0,10,0,5"/>
+
+                                <TextBlock Text="{Binding Rating, StringFormat=Рейтинг: {0}}"
+                                    FontSize="14"/>
+
+                                 <TextBlock Text="{Binding AgeRating, StringFormat=Возраст: {0}}"
+                                    FontSize="14"/>
+
+                                 <TextBlock Text="{Binding Genre}"
+                                       FontSize="13"
+                                       Foreground="Gray"
+                                       Margin="0,5,0,0"/>
+
+                                <TextBlock Text="{Binding Description}"
+                                       TextWrapping="Wrap"
+                                       Margin="0,5,0,0"/>
+
+                            </StackPanel>
+
+
+                        </Border>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+
+        </ScrollViewer>
     </Grid>
 </Page>
