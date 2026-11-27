@@ -1,0 +1,14 @@
+﻿<Page x:Class="Cinema.Pages.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Главная">
+
+    <Grid Background="#F2F4F7">
+        <TextBlock Text="Афиша кинотеатра"
+                   FontSize="30"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+        
+    </Grid>
+</Page>

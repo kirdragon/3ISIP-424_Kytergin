@@ -21,7 +21,8 @@
                         Margin="20,0,40,0"/>
             <Button Content="Главная"
                     Width="100"
-                    Margin="5"/>
+                    Margin="5"
+                    Click="HomeButton_Click"/>
             <Button Content="Войти"
                     Width="100"
                     Margin="5"/>
